@@ -1,4 +1,4 @@
-Nessa pasta encontra um desafio de codificação vanilla js, onde aprendi a construir 30 coisas em 30 dias.
+Nessa pasta encontra um desafio de codificação vanilla js, onde aprendi a construir 30 coisas.
 Sem frameworks, sem compiladores, sem bibliotecas.
 
 1.Bateria JavaScript
