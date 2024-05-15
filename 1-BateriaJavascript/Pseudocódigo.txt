@@ -1,0 +1,59 @@
+// Classe CSS para animação da tecla pressionada
+classeTocando = "playing"
+
+// Obter elementos do prato Crash e Hi-Hat superior
+pratoCrashRide = obterElementoPorID("crash-ride")
+hiHatTop = obterElementoPorID("hihat-top")
+
+// Função para animar o prato Crash ou Ride
+função animarCrashOuRide():
+    pratoCrashRide.estilo.transform = "rotate(0deg) scale(1.5)"
+
+// Função para animar o Hi-Hat fechado
+função animarHiHatFechado():
+    hiHatTop.estilo.top = "175px"
+
+// Função para tocar som e animar elementos quando uma tecla é pressionada
+função tocarSom(evento):
+    codigoTecla = evento.keyCode
+
+    elementoTecla = selecionarElemento(`div[data-key="${codigoTecla}"]`)
+    se elementoTecla for nulo, retornar
+
+    elementoAudio = selecionarElemento(`audio[data-key="${codigoTecla}"]`)
+    elementoAudio.tempoAtual = 0
+    elementoAudio.tocar()
+
+    se codigoTecla for 69 ou 82:
+        animarCrashOuRide()
+    se codigoTecla for 75 ou 73:
+        animarHiHatFechado()
+
+    elementoTecla.classList.add(classeTocando)
+
+// Função para remover transição do prato Crash/Ride após animação
+função removerTransicaoCrashRide(evento):
+    se evento.propriedadeNome != "transform", retornar
+    evento.alvo.estilo.transform = "rotate(-7.3deg) scale(1.5)"
+
+// Função para remover transição do Hi-Hat superior após animação
+função removerTransicaoHiHatTop(evento):
+    se evento.propriedadeNome != "top", retornar
+    evento.alvo.estilo.top = "165px"
+
+// Função para remover a classe de animação da tecla após a animação
+função removerTransicaoTecla(evento):
+    se evento.propriedadeNome != "transform", retornar
+    evento.alvo.classList.remove(classeTocando)
+
+// Adicionar evento de remoção de transição para cada tecla
+teclasBateria = transformarEmArray(selecionarTodos(".key"))
+para cada tecla em teclasBateria:
+    tecla.adicionarEvento("transitionend", removerTransicaoTecla)
+
+// Adicionar eventos de remoção de transição para pratos e Hi-Hat
+pratoCrashRide.adicionarEvento("transitionend", removerTransicaoCrashRide)
+hiHatTop.adicionarEvento("transitionend", removerTransicaoHiHatTop)
+
+// Adicionar evento para tocar som quando uma tecla é pressionada
+janela.adicionarEvento("keydown", tocarSom)
